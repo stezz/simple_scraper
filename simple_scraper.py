@@ -2,6 +2,19 @@ import requests
 from bs4 import BeautifulSoup
 from prettytable import PrettyTable
 import inquirer
+import fontstyle
+
+text1 = fontstyle.apply("Made 23/10/2022 Stefano and Tommi",
+                        'bold/Italic/red/GREEN_BG')
+text2 = fontstyle.apply("If you get an error it means that there are NO data or you made an error",
+                        'bold/Italic/red/GREEN_BG')
+text3 = fontstyle.apply("Thank you",
+                        'bold/Italic/red/GREEN_BG')
+
+
+print(text1)
+print(text2)
+print(text3)
 
 gender_list = {'Male': '1', 'Female': '2'}
 style_list = {
