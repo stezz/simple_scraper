@@ -83,7 +83,7 @@ def main():
             first_loop = False
             print("Scraping %s ." % BASE_URL, end='', flush=True)
         #print('%s' % url)
-        next_page = get_page_data(url, event_code, results_list)
+        next_page = get_page_data(url, event_code, year, results_list)
         next_url = BASE_URL + next_page
 
     table = PrettyTable()
@@ -124,7 +124,7 @@ def request_input():
     
 
 
-def get_page_data(url, event_code, results_list):
+def get_page_data(url, event_code, year, results_list):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
@@ -153,10 +153,12 @@ def get_page_data(url, event_code, results_list):
             time = data[5]
             fina = data[6]
             style = data[7]
+            age = int(year) - int(born.text)
             result_data = {
                         'pos': pos.text,
                         'name': name.text, 
                         'born': born.text,
+                        'age': age,
                         'date': date.text,
                         'time': time.text.strip(),
                         'fina': fina.text,
@@ -170,10 +172,12 @@ def get_page_data(url, event_code, results_list):
             date = data[5]
             time = data[6]
             fina = data[7]
+            age = int(year) - int(born.text)
             result_data = {
                         'pos': pos.text,
                         'name': name.text, 
                         'born': born.text,
+                        'age': age,
                         'date': date.text,
                         'time': time.text.strip(),
                         'fina': fina.text,}
