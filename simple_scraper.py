@@ -1,7 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 from prettytable import PrettyTable
-import string
 import inquirer
 
 gender_list = {'Male': '1', 'Female': '2'}
@@ -64,9 +63,11 @@ def main():
     while next_url != url:
         if not first_loop:
             url = next_url
+            print('.', end='', flush=True)
         else:
             first_loop = False
-        print("Scraping: %s" % url)
+            print("Scraping %s ." % BASE_URL, end='', flush=True)
+        #print('%s' % url)
         next_page = get_page_data(url, event_code, results_list)
         next_url = BASE_URL + next_page
 
@@ -78,6 +79,7 @@ def main():
     for res in results_list:
         table.add_row([res.get(key) for key in keys])
 
+    print('\n')
     print(table)
 
 def request_input():
@@ -103,7 +105,7 @@ def request_input():
     age_start = answers['age_start']
     age_end = answers['age_end']
     
-    return gender.strip(), age_end.strip(), age_start.strip(), style.strip(), year.strip()
+    return gender.strip(), age_start.strip(), age_end.strip(), style.strip(), year.strip()
     
 
 
