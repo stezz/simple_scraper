@@ -6,8 +6,10 @@ import fontstyle
 
 text1 = fontstyle.apply("Made 23/10/2022 Stefano and Tommi",
                         'bold/Italic/red/GREEN_BG')
+
 text2 = fontstyle.apply("If you get an error it means that there are NO data or you made an error",
                         'bold/Italic/red/GREEN_BG')
+
 text3 = fontstyle.apply("Thank you",
                         'bold/Italic/red/GREEN_BG')
 
