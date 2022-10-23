@@ -2,6 +2,21 @@ import requests
 from bs4 import BeautifulSoup
 from prettytable import PrettyTable
 import inquirer
+import fontstyle
+
+text1 = fontstyle.apply("Made 23/10/2022 Stefano and Tommi",
+                        'bold/Italic/red/GREEN_BG')
+
+text2 = fontstyle.apply("If you get an error it means that there are NO data or you made an error",
+                        'bold/Italic/red/GREEN_BG')
+
+text3 = fontstyle.apply("Thank you",
+                        'bold/Italic/red/GREEN_BG')
+
+
+print(text1)
+print(text2)
+print(text3)
 
 gender_list = {'Male': '1', 'Female': '2'}
 style_list = {
@@ -68,7 +83,7 @@ def main():
             first_loop = False
             print("Scraping %s ." % BASE_URL, end='', flush=True)
         #print('%s' % url)
-        next_page = get_page_data(url, event_code, results_list)
+        next_page = get_page_data(url, event_code, year, results_list)
         next_url = BASE_URL + next_page
 
     table = PrettyTable()
@@ -109,7 +124,7 @@ def request_input():
     
 
 
-def get_page_data(url, event_code, results_list):
+def get_page_data(url, event_code, year, results_list):
     page = requests.get(url)
     soup = BeautifulSoup(page.content, "html.parser")
 
@@ -138,10 +153,12 @@ def get_page_data(url, event_code, results_list):
             time = data[5]
             fina = data[6]
             style = data[7]
+            age = int(year) - int(born.text)
             result_data = {
                         'pos': pos.text,
                         'name': name.text, 
                         'born': born.text,
+                        'age': age,
                         'date': date.text,
                         'time': time.text.strip(),
                         'fina': fina.text,
@@ -155,10 +172,12 @@ def get_page_data(url, event_code, results_list):
             date = data[5]
             time = data[6]
             fina = data[7]
+            age = int(year) - int(born.text)
             result_data = {
                         'pos': pos.text,
                         'name': name.text, 
                         'born': born.text,
+                        'age': age,
                         'date': date.text,
                         'time': time.text.strip(),
                         'fina': fina.text,}
