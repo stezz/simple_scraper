@@ -277,9 +277,9 @@ ikmalue_list = {
                 "Varsinais":"106"
 }
 
+#levolte = int(input('How many times? '))
 
-
-
+#while levolte == True:
 
 BASE_URL = "https://www.tempusopen.fi"
 
