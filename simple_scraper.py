@@ -277,24 +277,42 @@ ikmalue_list = {
                 "Varsinais":"106"
 }
 
-#levolte = int(input('How many times? '))
+pool_type = {"25m":"1", "50m":"2"}
 
-#while levolte == True:
+competition_group = {
+
+                    "Kaikki":"",
+                    "js-cup":"64",
+                    "Masters kilpailut 2011":"12",
+                    "Masters kilpailut 2012":"41",
+                    "Masters kilpailut 2013":"40",
+                    "Masters kilpailut 2014":"18",
+                    "Masters kilpailut 2015":"39",
+                    "Masters kilpailut 2016":"45",
+                    "Masters kilpailut 2017":"49",
+                    "Masters kilpailut 2018":"59",
+                    "Suomen mestaruusuinnit":"11"
+
+}
+
+
 
 BASE_URL = "https://www.tempusopen.fi"
 
 
 def main():
-    FIRST_PAGE = "/index.php?r=result/index&Result%5Bresult_date%5D={year}&Result%5Bclass%5D={gender}&Result%5Bevent_code%5D={event_code}&Result%5Bpooltype%5D=1&Result%5Bcompetition_group%5D=&Result%5Bdate_first%5D={age_start}&Result%5Bdate_last%5D={age_end}&Result%5Bclub_group%5D={ikmalue}&Result%5Bswim_club%5D={club}&Result%5Bbesttimes%5D=1&ajax=result-grid&Result_sort=fina_p.desc"
+    FIRST_PAGE = "/index.php?r=result/index&Result%5Bresult_date%5D={year}&Result%5Bclass%5D={gender}&Result%5Bevent_code%5D={event_code}&Result%5Bpooltype%5D={pool}&Result%5Bcompetition_group%5D={competition}&Result%5Bdate_first%5D={age_start}&Result%5Bdate_last%5D={age_end}&Result%5Bclub_group%5D={ikmalue}&Result%5Bswim_club%5D={club}&Result%5Bbesttimes%5D=1&ajax=result-grid&Result_sort=fina_p.desc"
 
-    gender, age_start, age_end, event_code, year, club, ikmalue = request_input()
+    gender, age_start, age_end, event_code, year, club, ikmalue, pool, competition = request_input()
     formatter = {'year': year,
                  'age_start': age_start,
                  'age_end': age_end,
                  'gender': gender,
                  'event_code': event_code,
                  'club': club,
-                 'ikmalue': ikmalue
+                 'ikmalue': ikmalue,
+                 'pool': pool,
+                 'competition': competition
 
                  }
     FIRST_PAGE = FIRST_PAGE.format(**formatter)
@@ -345,7 +363,13 @@ def request_input():
                       choices=club_list.keys()),
         inquirer.List('ikmalue',
                       message='What ikm zone do you what? ',
-                      choices=ikmalue_list.keys())
+                      choices=ikmalue_list.keys()),
+        inquirer.List('pool',
+                      message='What pool lenght do you want? ',
+                      choices=pool_type.keys()),
+        inquirer.List('competition',
+                      message='What competition group do you what? ',
+                      choices=competition_group.keys())
 
     ]
     answers = inquirer.prompt(questions)
@@ -356,8 +380,10 @@ def request_input():
     age_end = answers['age_end']
     club = club_list[answers['club']]
     ikmalue = ikmalue_list[answers['ikmalue']]
+    pool = pool_type[answers['pool']]
+    competition = competition_group[answers['competition']]
 
-    return gender.strip(), age_start.strip(), age_end.strip(), style.strip(), year.strip(), club.strip(), ikmalue.strip()
+    return gender.strip(), age_start.strip(), age_end.strip(), style.strip(), year.strip(), club.strip(), ikmalue.strip(), pool.strip(), competition.strip()
 
 
 def get_page_data(url, event_code, year, results_list):
@@ -383,6 +409,7 @@ def get_page_data(url, event_code, year, results_list):
             name = data[1]
             name.div.clear()
             born = data[2]
+            competitionplace = data[3]
             date = data[4]
             time = data[5]
             fina = data[6]
@@ -392,6 +419,7 @@ def get_page_data(url, event_code, year, results_list):
                 'pos': pos.text,
                 'name': name.text,
                 'born': born.text,
+                'competition in finland': competitionplace.text,
                 'age': age,
                 'date': date.text,
                 'time': time.text.strip(),
@@ -403,6 +431,7 @@ def get_page_data(url, event_code, year, results_list):
             name = data[1]
             name.div.clear()
             born = data[2]
+            competitionplace = data[4]
             date = data[5]
             time = data[6]
             fina = data[7]
@@ -411,6 +440,7 @@ def get_page_data(url, event_code, year, results_list):
                 'pos': pos.text,
                 'name': name.text,
                 'born': born.text,
+                'competition in finland': competitionplace.text,
                 'age': age,
                 'date': date.text,
                 'time': time.text.strip(),
