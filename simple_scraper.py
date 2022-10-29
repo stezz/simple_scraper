@@ -414,6 +414,7 @@ def get_page_data(url, event_code, year, results_list):
             time = data[5]
             fina = data[6]
             style = data[7]
+            pooltype = data[8]
             age = int(year) - int(born.text)
             result_data = {
                 'pos': pos.text,
@@ -424,7 +425,9 @@ def get_page_data(url, event_code, year, results_list):
                 'date': date.text,
                 'time': time.text.strip(),
                 'fina': fina.text,
-                'style': style.text}
+                'style': style.text,
+                "pool": pooltype.text
+                }
         else:
             data = row.find_all("td")
             pos = data[0]
@@ -435,6 +438,7 @@ def get_page_data(url, event_code, year, results_list):
             date = data[5]
             time = data[6]
             fina = data[7]
+            pooltype = data[8]
             age = int(year) - int(born.text)
             result_data = {
                 'pos': pos.text,
@@ -444,7 +448,9 @@ def get_page_data(url, event_code, year, results_list):
                 'age': age,
                 'date': date.text,
                 'time': time.text.strip(),
-                'fina': fina.text, }
+                'fina': fina.text,
+                "pool": pooltype.text
+                }
         results_list.append(result_data)
     return next_url
 
