@@ -3,6 +3,19 @@ from bs4 import BeautifulSoup
 from prettytable import PrettyTable
 import inquirer
 import fontstyle
+import time
+import datetime
+
+startTime = time.time()
+begin_time = datetime.datetime.now()
+
+[4, 2, 3, 1, 5].sort()
+
+print(datetime.datetime.now())
+
+
+
+
 
 text1 = fontstyle.apply("Made 23/10/2022 Stefano and Tommi",
                         'bold/Italic/red/GREEN_BG')
@@ -414,6 +427,7 @@ def get_page_data(url, event_code, year, results_list):
             time = data[5]
             fina = data[6]
             style = data[7]
+            pooltype = data[8]
             age = int(year) - int(born.text)
             result_data = {
                 'pos': pos.text,
@@ -424,7 +438,10 @@ def get_page_data(url, event_code, year, results_list):
                 'date': date.text,
                 'time': time.text.strip(),
                 'fina': fina.text,
-                'style': style.text}
+                'style': style.text,
+                "pool": pooltype.text
+
+            }
         else:
             data = row.find_all("td")
             pos = data[0]
@@ -435,6 +452,7 @@ def get_page_data(url, event_code, year, results_list):
             date = data[5]
             time = data[6]
             fina = data[7]
+            pooltype = data[8]
             age = int(year) - int(born.text)
             result_data = {
                 'pos': pos.text,
@@ -444,10 +462,17 @@ def get_page_data(url, event_code, year, results_list):
                 'age': age,
                 'date': date.text,
                 'time': time.text.strip(),
-                'fina': fina.text, }
+                'fina': fina.text,
+                "pool": pooltype.text
+            }
         results_list.append(result_data)
     return next_url
 
 
 # start main app
 main()
+
+
+executionTime = (time.time() - startTime)
+print('Execution time in seconds: ' + str(executionTime))
+print('Execution time in seconds: ', datetime.datetime.now() - begin_time)
