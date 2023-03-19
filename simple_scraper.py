@@ -5,13 +5,12 @@ import inquirer
 import fontstyle
 import time
 import datetime
+#import fpdf
+
+
 
 startTime = time.time()
-begin_time = datetime.datetime.now()
 
-[4, 2, 3, 1, 5].sort()
-
-print(datetime.datetime.now())
 
 
 
@@ -334,6 +333,9 @@ def main():
     next_url = ""
     first_loop = True
 
+    begin_time = datetime.datetime.now()
+    print(datetime.datetime.now())
+
     while next_url != url:
         if not first_loop:
             url = next_url
@@ -357,10 +359,12 @@ def main():
     print(table)
 
 
+
+
 def request_input():
     questions = [
         inquirer.Text('year',
-                      message='What year are you interested in? [1900-2022]'),
+                      message='What year are you interested in? [1900-2023]'),
         inquirer.Text('age_start',
                       message='What is the start age? [11-99]'),
         inquirer.Text('age_end',
@@ -397,6 +401,16 @@ def request_input():
     competition = competition_group[answers['competition']]
 
     return gender.strip(), age_start.strip(), age_end.strip(), style.strip(), year.strip(), club.strip(), ikmalue.strip(), pool.strip(), competition.strip()
+
+#def create_pdf(results):
+#    pdf = fpdf.FPDF(format='letter')
+#    pdf.add_page()
+#    pdf.set_font("Arial", size=14)
+
+#    for i in results:
+#        pdf.write(5, str(i))
+#        pdf.ln()
+#    pdf.output("swimmerdata.pdf")
 
 
 def get_page_data(url, event_code, year, results_list):
@@ -448,25 +462,31 @@ def get_page_data(url, event_code, year, results_list):
             name = data[1]
             name.div.clear()
             born = data[2]
+            club = data[3]
             competitionplace = data[4]
             date = data[5]
             time = data[6]
             fina = data[7]
-            pooltype = data[8]
             age = int(year) - int(born.text)
             result_data = {
                 'pos': pos.text,
                 'name': name.text,
                 'born': born.text,
+                'club': club.text,
                 'competition in finland': competitionplace.text,
                 'age': age,
                 'date': date.text,
                 'time': time.text.strip(),
                 'fina': fina.text,
-                "pool": pooltype.text
             }
         results_list.append(result_data)
+
+
+
     return next_url
+
+
+
 
 
 # start main app
@@ -475,4 +495,3 @@ main()
 
 executionTime = (time.time() - startTime)
 print('Execution time in seconds: ' + str(executionTime))
-print('Execution time in seconds: ', datetime.datetime.now() - begin_time)
